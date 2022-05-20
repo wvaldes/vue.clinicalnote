@@ -1,0 +1,1719 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <title>Ang and Bootstrap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+  <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.3.1.js"></script>
+  <link rel="stylesheet" href="http://valor-software.com/ngx-bootstrap/assets/css/style.css">
+  
+  
+  <script> var app = angular.module('projectApp', []);</script>
+  <script>
+    angular.module('projectApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap']);
+
+  </script>
+</head>
+<style>
+  /* Style components 
+      .btn_red-no is for the review of system radio button "no" button. It should be red when :active
+      .btn_gree-yes is for the review of system radio button "yes". It should be green when selected and a "+" button should show up on the right side when :active
+      .btn_condition is the default button for any disease, medication, symptom or other condition. There is no color change when active or not.
+      .btn_ckbox is the default button for that supports a color change when active. Used in the PMHx area like the condition button but with the color change
+  */
+
+  .btn_red-no { 
+    color: #ffffff; 
+    background-color: #ABADAA; 
+    border-color: #130269; 
+  } 
+  .btn_red-no:hover { 
+    color: #ffffff; 
+    background-color: dimgrey; 
+    border-color: #130269; 
+  }
+  .btn_red-no:focus, 
+  .btn_red-no:active, 
+  .btn_red-no.active, 
+  .open .dropdown-toggle.btn_red-no.active { 
+    color: #ffffff; 
+    background-color: red; 
+    border-color: #130269; 
+  } 
+  
+
+  .btn_green-yes { 
+    color: #ffffff; 
+    background-color: #ABADAA; 
+    border-color: #130269; 
+  } 
+  .btn_green-yes:hover{ 
+    color: #ffffff; 
+    background-color: dimgrey; 
+    border-color: #130269; 
+  }
+  .btn_green-yes:focus, 
+  .btn_green-yes:active, 
+  .btn_green-yes.active, 
+  .open .dropdown-toggle.btn_green-yes { 
+    color: #ffffff; 
+    background-color: #4ED400; 
+    border-color: #130269; 
+  } 
+   
+
+  .btn_condition { 
+    color: #ffffff; 
+    background-color: cornflowerblue; 
+    border-color: #130269; 
+  } 
+  .btn_condition:hover{
+    color: #ffffff; 
+    background-color: dimgrey; 
+    border-color: #130269; 
+  } 
+  .btn_condition:focus, 
+  .btn_condition:active, 
+  .btn_condition.active, 
+  .open .dropdown-toggle.btn_condition { 
+    color: #ffffff; 
+    background-color: cornflowerblue; 
+    border-color: #130269; 
+  } 
+
+  
+  .btn_ckbox { 
+    color: #ffffff; 
+    background-color: grey; 
+    border-color: #130269; 
+  } 
+  .btn_ckbox:hover
+  { 
+    color: #ffffff; 
+    background-color: cornflowerblue; 
+    border-color: #130269; 
+  } 
+  .btn_ckbox:focus
+  { 
+    color: #ffffff; 
+    background-color: grey; 
+    border-color: #130269; 
+  }
+  .btn_ckbox.active, 
+  .open .dropdown-toggle.btn_ckbox { 
+    color: #ffffff; 
+    background-color: #4ED400; 
+    border-color: #130269; 
+  } 
+
+</style>
+<body ng-app="projectApp">
+<!--Remove this div for final product. Only for use to help determine how many sections to use in mobile view-->
+    <div class="w3-row">
+      <div class="w3-col m1 w3-center w3-grey">1</div>
+      <div class="w3-col m1 w3-center">2</div>
+      <div class="w3-col m1 w3-center w3-grey">3</div>
+      <div class="w3-col m1 w3-center">4</div>
+      <div class="w3-col m1 w3-center w3-grey">5</div>
+      <div class="w3-col m1 w3-center">6</div>
+      <div class="w3-col m1 w3-center w3-grey">7</div>
+      <div class="w3-col m1 w3-center">8</div>
+      <div class="w3-col m1 w3-center w3-grey">9</div>
+      <div class="w3-col m1 w3-center">10</div>
+      <div class="w3-col m1 w3-center w3-grey">11</div>
+      <div class="w3-col m1 w3-center">12</div>
+    </div>
+
+    <form>
+      <input type="file" accept="image/*" capture="camera">
+
+      <!--Encounter section-->
+      <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green">
+        <div class="w3-clear">
+          <button class="btn btn-primary" ng-model="encounter.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Encounter</button>
+        </div>
+        <div class="w3-row-padding" ng-show="encounter.button==1">
+          <div class="w3-col m6 l3">
+            <label>New/Established:</label>
+            <select class="w3-select w3-border" name="newEstablished" ng-model="form.encounter.newEstablished">
+              <option value=></option>
+              <option value="New">New</option>
+              <option value="Established">Established</option>
+            </select>
+          </div>
+          <div class="w3-col m6 l3">
+            <label>Place of service:</label>
+            <select class="w3-select w3-border" name="facilityPos" ng-model="form.encounter.facility">
+              <option value=></option>
+              <option value="Canyon Rim">Canyon Rim</option>
+              <option value="Willow Wood">Willow Wood</option>
+              <option value="Woodlawn">Woodlawn</option>
+              <option value="Mountain Point Medical Center">Mountain Point Medical Center</option>
+              <option value="Jordan Valley Hospital">Jordan Valley Hospital</option>
+            </select>
+          </div>
+          <div class="w3-col m8 l4">
+            <label>Date:</label>
+            <input class="w3-input w3-border" type="date">
+          </div>
+          <div class="w3-col s6 m2 l1">
+            <label>Room:</label>
+            <input class="w3-input w3-border"ng-model="form.encounter.room" type="text">
+          </div>
+          <div class="w3-col s6 m2 l1">
+            <label>Minutes:</label>
+            <input class="w3-input w3-border"ng-model="form.encounter.time" type="number">
+          </div>
+
+        </div>
+      </div>
+      <!--Demographics section -->
+      <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green">
+        <div class="w3-clear">
+          <button class="btn btn-primary" ng-model="demographics.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Demographics</button>
+        </div>
+        <div class="w3-row-padding" ng-show="demographics.button==1">
+          <div class= "w3-col m4 l6">
+            <label>Identification:</label>
+            <input class="w3-input w3-border" ng-model="patient.id" type="text" placeholder="Patient ID">
+          </div>
+          <div class="w3-col m4 l3">
+            <label>Birthday:</label>
+            <input class="w3-input w3-border" ng-model="patient.birthday" type="date" name="bday">
+          </div>
+          <div class="w3-col s6 m2 l1">
+            <label>Age:</label>
+            <input class="w3-input w3-border"ng-model="patient.age" type="number">
+          </div>
+          <div class="w3-col s6 m2 l2">
+            <label>Gender:</label>
+            <select class="w3-select w3-border" ng-model="patient.gender">
+              <option value="" disabled selected>Gender</option>
+              <option value=></option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="trans-sexual">Trans</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <!--Chief Complaint-->
+      <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green">
+        <div class="w3-clear">
+          <button class="btn btn-primary" ng-model="chiefcomplaint.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Chief Complaint</button>
+        </div>
+          <div class="form-group" ng-show="chiefcomplaint.button==1">
+            <label for="comment">Comment:</label>
+            <textarea class="form-control" rows="1" id="comment.chiefcomplaint"></textarea>
+          </div>
+        </div>
+
+      <!--History of Present Illness-->
+      <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green">
+        <div class="w3-clear">
+          <button class="btn btn-primary" ng-model="hpi.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">History of Present Illness (Condition)</button>
+        </div>
+          <div class="form-group" ng-show="hpi.button==1">
+            <label for="comment">Comment:</label>
+            <textarea class="form-control" rows="5" ng-model="comment.hpi"></textarea>
+          </div>
+        </div>
+
+      <!--Family and Social History-->
+      <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green">
+        <div class="w3-clear">
+          <button class="btn btn-primary" ng-model="psfhx.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Family and Social History</button>
+          <button class="btn btn-primary w3-right"  ng-model="psfhxmore.button" ng-show="psfhx.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0"><span class="glyphicon glyphicon-chevron-down"></span>More</button> 
+          <button class="btn btn-primary w3-center"  ng-model="psfhx.substance.button" ng-show="psfhx.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0"><span class="glyphicon glyphicon-chevron-down"></span>Substance</button> 
+          <div class="w3-row w3-padding-12" ng-show="psfhx.button">
+            <label class="w3-col m3 l2">Common:</label>
+            <section class="btn-group w3-col s4 m3 l2">
+              <label class="btn btn_green-yes" ng-model="psfhx.negthree" uib-btn-radio=1 uncheckable>Neg x 3</label>
+            </section> 
+            <section class="btn-group w3-col s4 m3 l2">
+              <label class="btn btn_green-yes" ng-model="psfhx.tobacco" uib-btn-radio=1 uncheckable>Tobacco</label>
+            </section> 
+            <section class="btn-group w3-col s4 m3 l2">
+              <label class="btn btn_green-yes" ng-model="psfhx.alcohol" uib-btn-radio=1 uncheckable>Alcohol</label>
+            </section> 
+            <section class="btn-group w3-col s6 m3 l2">
+              <label class="btn btn_green-yes" ng-model="psfhx.noncontributory" uib-btn-radio=1 uncheckable>Noncontributory</label>
+            </section> 
+          </div>
+          <div class="w3-row w3-padding-12" ng-show="psfhx.substance.button">
+            <label class="w3-col m3 l2">Substance:</label>
+            <section class="btn-group w3-col s4 m3 l2">
+              <label class="btn btn_green-yes" ng-model="psfhx.cannabis" uib-btn-radio=1 uncheckable>Cannabis</label>
+            </section> 
+            <section class="btn-group w3-col s4 m3 l2">
+              <label class="btn btn_green-yes" ng-model="psfhx.cocaine" uib-btn-radio=1 uncheckable>Cocaine</label>
+            </section> 
+            <section class="btn-group w3-col s4 m3 l2">
+              <label class="btn btn_green-yes" ng-model="psfhx.heroin" uib-btn-radio=1 uncheckable>Heroin</label>
+            </section> 
+            <section class="btn-group w3-col s4 m3 l2">
+              <label class="btn btn_green-yes" ng-model="psfhx.meth" uib-btn-radio=1 uncheckable>Meth</label>
+            </section> 
+            <section class="btn-group w3-col s4 m3 l2">
+              <label class="btn btn_green-yes" ng-model="psfhx.opioids" uib-btn-radio=1 uncheckable>Opioids</label>
+            </section> 
+            <section class="btn-group w3-col s4 m3 l2">
+              <label class="btn btn_green-yes" ng-model="psfhx.spice" uib-btn-radio=1 uncheckable>Spice</label>
+            </section> 
+          </div>
+          <div class="w3-row w3-padding-12"  ng-show="psfhxmore.button">
+            <label class="w3-col m3 l2">More:</label>
+            <section class="btn-group w3-col s6 m3 l2">
+              <label class="btn btn_green-yes" ng-model="psfhx.homeless" uib-btn-radio=1 uncheckable>Homeless</label>
+            </section> 
+            <section class="btn-group w3-col s6 m3 l2">
+              <label class="btn btn_green-yes" ng-model="psfhx.committed" uib-btn-radio=1 uncheckable>Committed</label>
+            </section> 
+          </div>
+
+        </div>
+          <div class="form-group" ng-show="psfhx.button==1">
+            <label for="comment">Comment:</label>
+            <textarea class="form-control" rows="5" id="comment.psfhx"></textarea>
+          </div>
+        </div>
+
+      <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green">
+        <div class="w3-clear">
+          <button class="btn btn-warning" ng-model="allergies.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Allergies</button>
+          <button class="btn btn-primary w3-right"  ng-model="allergiesmore.button" ng-show="allergies.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0"><span class="glyphicon glyphicon-chevron-down"></span>More</button> 
+          <button class="btn btn-primary w3-center"  ng-model="allergiesmeds.button" ng-show="allergies.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0"><span class="glyphicon glyphicon-chevron-down"></span>Meds</button> 
+          <div class="w3-row w3-padding-12" ng-show="allergies.button">
+            <label class="w3-col m3 l2">Common:</label>
+            <section class="btn-group w3-col s6 m3 l2">
+              <label class="btn btn_green-yes" ng-model="history.allergies.nkallergies" uib-btn-radio=1 uncheckable>No allergies</label>
+            </section> 
+            <section class="btn-group w3-col s6 m3 l2">
+              <label class="btn btn_green-yes" ng-model="history.allergies.nkda" uib-btn-radio=1 uncheckable>No drug alleriges</label>
+            </section> 
+          </div>
+          <div class="w3-row w3-padding-12" ng-show="allergiesmeds.button">
+            <label class="w3-col m3 l2">Meds:</label>
+            <section class="btn-group w3-col s6 m3 l2">
+              <label class="btn btn_green-yes" ng-model="history.allergies.pcn" uib-btn-radio=1 uncheckable>Penicillin</label>
+            </section> 
+            <section class="btn-group w3-col s6 m3 l2">
+              <label class="btn btn_green-yes" ng-model="history.allergies.sulfa" uib-btn-radio=1 uncheckable>Sulfa meds</label>
+            </section> 
+          </div>
+          <div class="w3-row w3-padding-12"  ng-show="allergiesmore.button">
+            <label class="w3-col m3 l2">More:</label>
+            <section class="btn-group w3-col s6 m3 l2">
+              <label class="btn btn_green-yes" ng-model="history.allergies.gluten" uib-btn-radio=1 uncheckable>Gluten</label>
+            </section> 
+            <section class="btn-group w3-col s6 m3 l2">
+              <label class="btn btn_green-yes" ng-model="history.allergies.pollen" uib-btn-radio=1 uncheckable>Pollen</label>
+            </section> 
+          </div>
+
+        </div>
+        <div class="form-group" ng-show="allergiesmore.button==1">
+          <label for="comment">Comment:</label>
+          <textarea class="form-control" rows="1" id="comment.allergies"></textarea>
+        </div>
+      </div>
+
+
+      <!--Past Medical History -->
+      <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green">
+        <div class="w3-clear">
+          <button 
+            class="btn btn-primary" 
+            ng-model="pmhx.button" 
+            uib-btn-checkbox btn-checkbox-true="1" 
+            btn-checkbox-false="0">Past Medical History
+          </button>
+          <button 
+            class="btn btn-primary w3-right"  
+            ng-model="pmhxmore.button" 
+            ng-show="pmhx.button" 
+            uib-btn-checkbox btn-checkbox-true="1" 
+            btn-checkbox-false="0">
+            <span class="glyphicon glyphicon-chevron-down"></span>More
+          </button> 
+          <div class="w3-row w3-padding-12" ng-show="pmhx.button">
+            <label class="w3-col m3 l2">Common:</label>
+
+            <section class="btn-group w3-col s6 m3 l2">
+              <button 
+                ng-model="history.pmhx.asthma" 
+                class="btn btn_condition" 
+                uib-btn-checkbox btn-checkbox-true="true" 
+                btn-checkbox-false="false">Asthma
+              </button>
+              <button 
+                ng-show="history.pmhx.asthma" 
+                ng-model="asthmabutton" 
+                class="btn btn-warning" 
+                uib-btn-checkbox btn-checkbox-true="1" 
+                btn-checkbox-false="0">
+                  +
+              </button>
+            </section> 
+            <section class="btn-group w3-col s6 m3 l2">
+              <button ng-model="history.pmhx.cancer" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Cancer</button>
+              <button ng-show="history.pmhx.cancer" ng-model="cancerbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+            </section> 
+            <section class="btn-group w3-col s6 m3 l2">
+              <button ng-model="history.pmhx.copd" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">COPD</button>
+              <button ng-show="history.pmhx.copd" ng-model="copdbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+            </section> 
+            <section class="btn-group w3-col s6 m3 l2">
+              <button ng-model="history.pmhx.diabetestype2" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Diabetes Type 2</button>
+              <button ng-show="history.pmhx.diabetestype2" ng-model="diabetestype2button" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+            </section>
+            <section class="btn-group w3-col s6 m3 l2">
+              <button ng-model="history.pmhx.heartattack" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Heart Attack</button>
+              <button ng-show="history.pmhx.heartattack" ng-model="heartattackbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+            </section> 
+            <section class="btn-group w3-col s6 m3 l2">
+              <button ng-model="history.pmhx.chf" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Heart Failure</button>
+              <button ng-show="history.pmhx.chf" ng-model="chfbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+            </section> 
+              <section class="btn-group w3-col s6 m3 l2">
+                <button ng-model="history.pmhx.hyperlipidemia" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Hyperlipidemia</button>
+                <button ng-show="history.pmhx.hyperlipidemia" ng-model="hyperlipidemiabutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+              </section> 
+            <section class="btn-group w3-col s6 m3 l2">
+              <button ng-model="history.pmhx.htn" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Hypertension</button>
+              <button ng-show="history.pmhx.htn" ng-model="htnbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+            </section>
+            <section class="btn-group w3-col s6 m3 l2">
+              <button ng-model="history.pmhx.chronickidneydisease" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Kidney disease</button>
+              <button ng-show="history.pmhx.chronickidneydisease" ng-model="chronickidneydiseasebutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+            </section> 
+              <section class="btn-group w3-col s6 m3 l2">
+                <button ng-model="history.pmhx.stroke" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Stroke</button>
+                <button ng-show="history.pmhx.stroke" ng-model="strokebutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+              </section> 
+          </div>
+          <div class="w3-round w3-hover-shadow w3-border w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green" ng-show="pmhxmore.button==1">
+            <div class="w3-clear">
+              <div class="w3-row w3-padding-4">
+                <section class="btn-group w3-col m3 l2">
+                  <button class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-model="pmhxmore.general.button"><span class="glyphicon glyphicon-chevron-down"></span></button> 
+                  <button class="btn btn-default w3-border-0" ng-model="pmhxmore.general.button"><b>General:</b></button>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div class="w3-round w3-hover-shadow w3-border w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green" ng-show="pmhxmore.button==1">
+            <div class="w3-clear">
+              <div class="w3-row w3-padding-4">
+                <section class="btn-group w3-col m3 l2">
+                  <button class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-model="pmhxmore.cv.button"><span class="glyphicon glyphicon-chevron-down"></span></button> 
+                  <button class="btn btn-default w3-border-0" ng-model="pmhxmore.cv.button"><b>Cardio:</b></button>
+                </section>
+                <section class="btn-group w3-col s6 m3 l2">
+                  <button ng-model="history.pmhx.atrialfibrillation"class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Atrial Fibrillation</button>
+                  <button ng-show="history.pmhx.atrialfibrillation" ng-model="atrialfibrillationbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                </section>
+                <section class="w3-col s12" ng-show="pmhxmore.cv.button" >
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.dysrhythmia" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Dysrhythmia</button>
+                    <button ng-show="history.pmhx.dysrhythmia" ng-model="dysrhythmiabutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.heartdisease" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Heart disease</button>
+                    <button ng-show="history.pmhx.heartdisease" ng-model="heartdiseasebutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                </section>
+              </div>
+            </div>
+          </div>
+          <div class="w3-round w3-hover-shadow w3-border w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green" ng-show="pmhxmore.button==1">
+            <div class="w3-clear">
+              <div class="w3-row w3-padding-4">
+                <section class="btn-group w3-col m3 l2">
+                  <button class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-model="pmhxmore.genetic.button"><span class="glyphicon glyphicon-chevron-down"></span></button> 
+                  <button class="btn btn-default w3-border-0" ng-model="pmhxmore.genetic.button"><b>Genetic:</b></button>
+                </section>
+                <section class="btn-group w3-col s6 m3 l2" ng-show="pmhxmore.genetic.button">
+                  <button ng-model="history.pmhx.haemophilia" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Haemophilia</button>
+                  <button ng-show="history.pmhx.haemophilia" ng-model="haemophiliabutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                </section>
+                <section class="w3-col s12" ng-show="pmhxmore.genetic.button" >
+                </section> 
+              </div>
+            </div>
+          </div>
+          <div class="w3-round w3-hover-shadow w3-border w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green" ng-show="pmhxmore.button==1">
+            <div class="w3-clear">
+              <div class="w3-row w3-padding-4">
+                <section class="btn-group w3-col m3 l2">
+                  <button class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-model="pmhxmore.endo.button"><span class="glyphicon glyphicon-chevron-down"></span></button> 
+                  <button class="btn btn-default w3-border-0" ng-model="pmhxmore.endo.button"><b>Endocrine:</b></button>
+                </section>
+                <section class="btn-group w3-col s6 m3 l2">
+                  <button ng-model="history.pmhx.hypothyroidism" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Hypothyroidism</button>
+                  <button ng-show="history.pmhx.hypothyroidism" ng-model="hypothyroidismbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                </section> 
+                <section class="btn-group w3-col s6 m3 l2">
+                  <button ng-model="history.pmhx.hyperthyroidism" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Hyperthyroidism</button>
+                  <button ng-show="history.pmhx.hyperthyroidism" ng-model="hyperthyroidismbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                </section> 
+                <section class="w3-col s12" ng-show="pmhxmore.endo.button" >
+                  <section class="btn-group w3-col s6 m3 l2" ng-show="pmhxmore.endo.button">
+                    <button ng-model="history.pmhx.diabetestype1" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Diabetes Type 1</button>
+                    <button ng-show="history.pmhx.diabetestype1" ng-model="diabetestype1button" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.osteoporosis" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Osteoporosis</button>
+                    <button ng-show="history.pmhx.osteoporosis" ng-model="osteoporosisbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section>              
+                </section>              
+              </div>
+            </div>
+          </div>
+          <div class="w3-round w3-hover-shadow w3-border w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green" ng-show="pmhxmore.button==1">
+            <div class="w3-clear">
+              <div class="w3-row w3-padding-4">
+                <section class="btn-group w3-col m3 l2">
+                  <button class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-model="pmhxmore.gastro.button"><span class="glyphicon glyphicon-chevron-down"></span></button> 
+                  <button class="btn btn-default w3-border-0" ng-model="pmhxmore.gastro.button"><b>Gastro:</b></button>
+                </section>
+                <section class="w3-col s12" ng-show="pmhxmore.gastro.button" >
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.crohns" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Crohns</button>
+                    <button ng-show="history.pmhx.crohns" ng-model="crohnsbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.ulcerativecolitis" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Ulcerative Colitis</button>
+                    <button ng-show="history.pmhx.ulcerativecolitis" ng-model="ulcerativecolitisbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section>
+                </section>                
+              </div>
+            </div>
+          </div>
+          <div class="w3-round w3-hover-shadow w3-border w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green" ng-show="pmhxmore.button==1">
+            <div class="w3-clear">
+              <div class="w3-row w3-padding-4">
+                <section class="btn-group w3-col m3 l2">
+                  <button class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-model="pmhxmore.id.button"><span class="glyphicon glyphicon-chevron-down"></span></button> 
+                  <button class="btn btn-default w3-border-0" ng-model="pmhxmore.id.button"><b>ID:</b></button>
+                </section>
+                <section class="w3-col s12" ng-show="pmhxmore.id.button" >
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.pneumonia" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Pneumonia</button>
+                    <button ng-show="history.pmhx.pneumonia" ng-model="pneumoniabutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.HIV" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">HIV</button>
+                    <button ng-show="history.pmhx.HIV" ng-model="HIVbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                </section> 
+              </div>
+            </div>
+          </div>
+          <div class="w3-round w3-hover-shadow w3-border w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green" ng-show="pmhxmore.button==1">
+            <div class="w3-clear">
+              <div class="w3-row w3-padding-4">
+                <section class="btn-group w3-col m3 l2">
+                  <button class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-model="pmhxmore.neuro.button"><span class="glyphicon glyphicon-chevron-down"></span></button> 
+                  <button class="btn btn-default w3-border-0" ng-model="pmhxmore.neuro.button"><b>Neuro:</b></button>
+                </section>
+                <section class="btn-group w3-col s6 m3 l2">
+                  <button ng-model="history.pmhx.dementia" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Dementia</button>
+                  <button ng-show="history.pmhx.dementia" ng-model="dementiabutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                </section> 
+                <section class="w3-col s12" ng-show="pmhxmore.neuro.button" >
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.epilepsy" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Epilepsy</button>
+                    <button ng-show="history.pmhx.epilepsy" ng-model="epilepsybutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.multiplesclerosis" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Multiple Sclerosis</button>
+                    <button ng-show="history.pmhx.multiplesclerosis" ng-model="multiplesclerosisbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.parkinsons" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Parkinsons</button>
+                    <button ng-show="history.pmhx.parkinsons" ng-model="parkinsonsbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                </section> 
+              </div>
+            </div>
+          </div>
+          <div class="w3-round w3-hover-shadow w3-border w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green" ng-show="pmhxmore.button==1">
+            <div class="w3-clear">
+              <div class="w3-row w3-padding-4">
+                <section class="btn-group w3-col m3 l2">
+                  <button class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-model="pmhxmore.optho.button"><span class="glyphicon glyphicon-chevron-down"></span></button> 
+                  <button class="btn btn-default w3-border-0" ng-model="pmhxmore.optho.button"><b>Optho:</b></button>
+                </section>
+                <section class="btn-group w3-col s6 m3 l2">
+                  <button ng-model="history.pmhx.glaucoma" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Glaucoma</button>
+                  <button ng-show="history.pmhx.glaucoma" ng-model="glaucomabutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                </section> 
+                <section class="w3-col s12" ng-show="pmhxmore.optho.button" >
+                </section> 
+              </div>
+            </div>
+          </div>
+          <div class="w3-round w3-hover-shadow w3-border w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green" ng-show="pmhxmore.button==1">
+            <div class="w3-clear">
+              <div class="w3-row w3-padding-4">
+                <section class="btn-group w3-col m3 l2">
+                  <button class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-model="pmhxmore.pulm.button"><span class="glyphicon glyphicon-chevron-down"></span></button> 
+                  <button class="btn btn-default w3-border-0" ng-model="pmhxmore.pulm.button"><b>Pulm:</b></button>
+                </section>
+                <section class="w3-col s12" ng-show="pmhxmore.pulm.button" >
+                </section> 
+              </div>
+            </div>
+          </div>
+          <div class="w3-round w3-hover-shadow w3-border w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green" ng-show="pmhxmore.button==1">
+            <div class="w3-clear">
+              <div class="w3-row w3-padding-4">
+                <section class="btn-group w3-col m3 l2">
+                  <button class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-model="pmhxmore.psych.button"><span class="glyphicon glyphicon-chevron-down"></span></button> 
+                  <button class="btn btn-default w3-border-0" ng-model="pmhxmore.psych.button"><b>Psych:</b></button>
+                </section>
+                <section class="btn-group w3-col s6 m3 l2">
+                  <button ng-model="history.pmhx.anxiety" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Anxiety</button>
+                  <button ng-show="history.pmhx.anxiety" ng-model="anxietybutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                </section> 
+                <section class="btn-group w3-col s6 m3 l2">
+                  <button ng-model="history.pmhx.depression" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Depression</button>
+                  <button ng-show="history.pmhx.depression" ng-model="depressionbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                </section> 
+                <section class="w3-col s12" ng-show="pmhxmore.psych.button" >
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.bipolar" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Bipolar</button>
+                    <button ng-show="history.pmhx.bipolar" ng-model="bipolarbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.schizophrenia" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Schizophrenia</button>
+                    <button ng-show="history.pmhx.schizophrenia" ng-model="schizophreniabutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                </section> 
+              </div>
+            </div>
+          </div>
+          <div class="w3-round w3-hover-shadow w3-border w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green" ng-show="pmhxmore.button==1">
+            <div class="w3-clear">
+              <div class="w3-row w3-padding-4">
+                <section class="btn-group w3-col m3 l2">
+                  <button class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-model="pmhxmore.renal.button"><span class="glyphicon glyphicon-chevron-down"></span></button> 
+                  <button class="btn btn-default w3-border-0" ng-model="pmhxmore.renal.button"><b>Renal:</b></button>
+                </section>
+                <section class="w3-col s12" ng-show="pmhxmore.renal.button" >
+                </section> 
+              </div>
+            </div>
+          </div>
+          <div class="w3-round w3-hover-shadow w3-border w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green" ng-show="pmhxmore.button==1">
+            <div class="w3-clear">
+              <div class="w3-row w3-padding-4">
+                <section class="btn-group w3-col m3 l2">
+                  <button class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-model="pmhxmore.rheum.button"><span class="glyphicon glyphicon-chevron-down"></span></button> 
+                  <button class="btn btn-default w3-border-0" ng-model="pmhxmore.rheum.button"><b>Rheum:</b></button>
+                </section>
+                <section class="w3-col s12" ng-show="pmhxmore.rheum.button" >
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.arthritis" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Arthritis</button>
+                    <button ng-show="history.pmhx.arthritis" ng-model="arthritisbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                  <section class="btn-group w3-col s6 m3 l2">
+                    <button ng-model="history.pmhx.lupus" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Lupus</button>
+                    <button ng-show="history.pmhx.lupus" ng-model="lupusbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+                  </section> 
+                </section> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!-- SUB-SECTION
+Medical condition detail sections -->
+      <div>
+  <!--Asthma -->
+        <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green" ng-show="asthmabutton">
+          <div class="w3-clear">
+              <button class="btn btn-primary" ng-model="asthma.detail" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Asthma</button>
+              <label class="btn btn-primary w3-right" ng-show="asthma.detail==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+          </div>
+          <div class="w3-row">
+          </div> 
+        </div>
+  <!--COPD-->         
+        <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green" ng-show="copdbutton">
+          <div class="w3-clear">
+              <button class="btn btn-primary" ng-model="copd.detail" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">COPD</button>
+              <label class="btn btn-primary w3-right" ng-show="copd.detail==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+          </div>
+          <div class="w3-row">
+            <div ng-show="copdbutton === 1">
+              <div class="w3-col s6 m2 12">
+                <li><input type="checkbox" ng-model="test.fevfvc.initialdx">FEV/FVC less than 70%</li>
+                <div class="w3-col s6 m2 l2">
+                      <label>FEV1%:</label>
+                      <input class="w3-input w3-border" ng-model="test.fev1.mostrecent">
+                </div>
+                <div>
+                  <select class="w3-select w3-border" ng-model="copd.severity">
+                      <option value="" disabled selected></option>
+                      <option value="1">Mild - FEV1 greater/equal to 80%</option>
+                      <option value="2">Mod - FEV1 less 80% greater 50%</option>
+                      <option value="3">Severe - FEV1 less 50% greater 30%</option>
+                      <option value="3">Very Severe - FEV1 less 30%</option>
+                  </select>
+                </div>
+                <div>
+                  <li><input type="checkbox" ng-model="plan.copd.severity">Include in COPD plan?</li>
+                </div>
+              </div> 
+          </div>
+        </div>
+      </div> 
+ 
+  <!--Diabetes -->         
+        <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green" ng-show="diabetestype2button">
+          <div class="w3-clear">
+              <button class="btn btn-primary" ng-model="diabetestype2.detail" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Diabetes Type 2</button>
+              <label class="btn btn-primary w3-right" ng-show="diabetestype2.detail==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+          </div>
+          <div class="w3-row -padding">
+            <div ng-show="diabetestype2button === 1">
+              <div class="w3-col s6 m2 l2">
+                    <label>Last Hg A1c:</label>
+                    <input class="w3-input w3-border" ng-model="lab.hga1c.mostrecent">
+              </div>
+              <div class="w3-col s6 m2 l2">
+                    <label>Age onset:</label>
+                    <input class="w3-input w3-border" ng-model="diabetes.ageonset">
+              </div>
+              <div class="w3-col s12 m8 l10">
+                    <label>Prior treatments:</label>
+                    <input class="w3-input w3-border" ng-model="diabetes.priortx">
+              </div>
+
+              <div class="w3-row s12">
+                    <label>Current Medications:</label>
+              </div>
+
+              <div class="btn-group w3-col s6 m3 l2">
+                  <p>biguanides</p>
+                  <button class="btn btn_ckbox" ng-model="pharm.biguanide.metformin" uib-btn-checkbox>metformin
+              </div>
+              <div class="w3-col s12 m2 l2">
+                  <label>thiazlidinediones (glitazones):</label>
+                <select class="w3-select w3-border" ng-model="pharm.glitazones">
+                    <option value="">None</option>
+                    <option value="1">pioglitazone (Actos)</option>
+                    <option value="2">rosiglitazone (Avandia)</option>
+                    <option value="3">lobeglitazone (Duvie)</option>
+                </select>
+                <button class="btn btn_ckbox" ng-model="pharm.glitazones.pioglitazone" uib-btn-checkbox>pioglitazone (Actos)
+                <button class="btn btn_ckbox" ng-model="pharm.glitazones.rosiglitazone" uib-btn-checkbox>rosiglitazone (Avandia)
+                <button class="btn btn_ckbox" ng-model="pharm.glitazones.lobeglitazone" uib-btn-checkbox>lobeglitazone (Duvie)
+              </div>
+              <div class="w3-col s12 m2 l2">
+                <p>Checklist of medications</p>
+                <li><input type="checkbox" ng-model="pharm.insulin.regular">regular insulin (Humulin R or Novolin R)
+                </li><li><input type="checkbox" ng-model="pharm.insulin.lispro">lispro insulin (Humalog)
+                </li><li><input type="checkbox" ng-model="pharm.insulin.aspart">aspart insulin (Novolog)
+                </li><li><input type="checkbox" ng-model="pharm.insulin.glulisine">glulisine insulin (Apidra)
+                </li><li><input type="checkbox" ng-model="pharm.insulin.zinc">zinc insulin (Semilente)
+                </li><li><input type="checkbox" ng-model="pharm.biguanide.metformin">metformin (Glucophage)
+                </li><li><input type="checkbox" ng-model="pharm.thiazlidinedione.pioglitazone">pioglitazone (Actos)
+                </li><li><input type="checkbox" ng-model="pharm.sulfonylurea">sulfonylurea (Glipizide)
+                </li><li><input type="checkbox" ng-model="pharm.meglitnide">meglitnide (Repaglinide)
+                </li><li><input type="checkbox" ng-model="pharm.dpp4">dpp4 inhibitors (Januvia)
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div> 
+    </div>         
+  </div>
+  <!--HTN-->         
+        <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green" ng-show="htnbutton">
+          <div class="w3-clear">
+              <button class="btn btn-primary" ng-model="htn.detail" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">HTN</button>
+              <label class="btn btn-primary w3-right" ng-show="htn.detail==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+          </div>
+          <div class="w3-row">
+          </div> 
+        </div> 
+      </div>
+    </div>
+<!--  NEW SECTION 
+Prevention and Risk -->
+      <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green">
+        <div class="w3-clear">
+          <button class="btn btn-primary" ng-model="prevrisk.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Prevention and Risk</button>
+          <button class="btn btn-primary w3-right"  ng-model="prevriskmore.button" ng-show="prevrisk.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0"><span class="glyphicon glyphicon-chevron-down"></span>More</button> 
+          <div class="w3-row w3-padding-12" ng-show="prevrisk.button">
+            <div class="w3-col s12">
+              <p><b>Risk factors</b></p>
+              <p>Diabetes (x of x)</p>
+              <p>COPD  (x of x)</p>
+              <div class="w3-col s6 m2 l2">
+                    <label>Gender:</label>
+                    <select class="w3-select w3-border" ng-model="patient.gender">
+                      <option value="" disabled selected>Gender</option>
+                      <option value=></option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="trans-sexual">Trans</option>
+                    </select>
+              </div>
+              <div class="w3-col s6 m2 l1">
+                    <label>Age:</label>
+                    <input class="w3-input w3-border"ng-model="patient.age" type="number">
+              </div>
+              <div class="w3-col s6 m2 l1">
+                    <label>Habitus:</label>
+                    <input class="w3-input w3-border"ng-model="pe.const.habitus">
+              </div>
+              <div class="w3-row s12">
+              </div>
+              <div class="w3-row w3-padding-4">
+                <div class="btn-group w3-col s6 m3 l2">
+                      <button class="btn btn_ckbox" ng-model="history.pmhx.htn" uib-btn-checkbox>hypertension
+                </div>
+                <div class="btn-group w3-col s6 m3 l2">
+                      <button class="btn btn_ckbox" ng-model="history.pmhx.hyperlipidemia" uib-btn-checkbox>hyperlipidemia
+                </div>
+                <div class="btn-group w3-col s6 m3 l2">
+                  <div ng-show="patient.gender == 2">
+                          <button class="btn btn_ckbox" ng-model="history.pmhx.macrosomia" uib-btn-checkbox>macrosomia
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!-- Review of systems section -->
+         <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">  
+          <div>
+            <button ng-model="history.ros.button" class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Review of Systems</button>
+            <button ng-model="history.ros.common" class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Show 2 common</button>
+            <button ng-model="history.ros.standarddetailed" class="btn btn-default" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">detailed</button>
+            <button ng-model="history.ros.standardcomp" class="btn btn-default" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">comprehensive</button>
+            <button ng-model="history.ros.linked" class="btn btn-default" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">linked to PMHx</button>
+          </div>
+          <div name="reviewOfSystems" ng-show="history.ros.button">
+            <!-- History ROS Assist devices, prosthetics, implants, etc -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.assist.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Assists or implants</button>
+                <label class="btn btn-primary w3-right" ng-model="history.ros.assist.morebutton" ng-show="history.ros.assist.button==1" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row" ng-show="history.ros.assist.button">
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny">
+                  <label class="btn btn_red-no" ng-model="history.ros.assist.hearingaid" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition">hearing aid</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.assist.hearingaid" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="hearingaidexpand" ng-show="history.ros.assist.hearingaid"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.hearingaid" ng-show="hearingaidexpand == '1' && history.ros.assist.hearingaid" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny">
+                  <label class="btn btn_red-no" ng-model="history.ros.assist.eyecorrection" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition">eye correction</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.assist.eyecorrection" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="eyecorrectionexpand" ng-show="history.ros.assist.eyecorrection"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.eyecorrection" ng-show="eyecorrectionexpand == '1' && history.ros.assist.eyecorrection" placeholder="Comment on positive finding">
+                </div>
+                <section class="w3-col s12" ng-show="history.ros.assist.morebutton==1">
+                  <div class="btn-group w3-col m6 l4 w3-padding-tiny">
+                    <label class="btn btn_red-no" ng-model="history.ros.assist.cane" uib-btn-radio=0 uncheckable>No</label>
+                    <label class="btn btn_condition">cane</label>
+                    <label class="btn btn_green-yes" ng-model="history.ros.assist.cane" uib-btn-radio=1 uncheckable>Yes</label>
+                    <label class="btn btn_green-yes" ng-model="caneexpand" ng-show="history.ros.assist.cane"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                    <input class="w3-input w3-border" ng-model="comment.cane" ng-show="caneexpand == '1' && history.ros.assist.cane" placeholder="Comment on positive finding">
+                  </div>
+                  <div class="btn-group w3-col m6 l4 w3-padding-tiny">
+                    <label class="btn btn_red-no" ng-model="history.ros.assist.foleycatheter" uib-btn-radio=0 uncheckable>No</label>
+                    <label class="btn btn_condition">catheter (foley)</label>
+                    <label class="btn btn_green-yes" ng-model="history.ros.assist.foleycatheter" uib-btn-radio=1 uncheckable>Yes</label>
+                    <label class="btn btn_green-yes" ng-model="foleycatheterexpand" ng-show="history.ros.assist.foleycatheter"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                    <input class="w3-input w3-border" ng-model="comment.foleycatheter" ng-show="foleycatheterexpand == '1' && history.ros.assist.foleycatheter" placeholder="Comment on positive finding">
+                  </div>
+                  <div class="btn-group w3-col m6 l4 w3-padding-tiny">
+                    <label class="btn btn_red-no" ng-model="history.ros.assist.suprapubiccatheter" uib-btn-radio=0 uncheckable>No</label>
+                    <label class="btn btn_condition">catheter (suprapubic)</label>
+                    <label class="btn btn_green-yes" ng-model="history.ros.assist.suprapubiccatheter" uib-btn-radio=1 uncheckable>Yes</label>
+                    <label class="btn btn_green-yes" ng-model="suprapubiccatheterexpand" ng-show="history.ros.assist.suprapubiccatheter"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                    <input class="w3-input w3-border" ng-model="comment.suprapubiccatheter" ng-show="suprapubiccatheterexpand == '1' && history.ros.assist.suprapubiccatheter" placeholder="Comment on positive finding">
+                  </div>
+                  <div class="btn-group w3-col m6 l4 w3-padding-tiny">
+                    <label class="btn btn_red-no" ng-model="history.ros.assist.prostheticleg" uib-btn-radio=0 uncheckable>No</label>
+                    <label class="btn btn_condition">prosthetic leg</label>
+                    <label class="btn btn_green-yes" ng-model="history.ros.assist.prostheticleg" uib-btn-radio=1 uncheckable>Yes</label>
+                    <label class="btn btn_green-yes" ng-model="prostheticlegexpand" ng-show="history.ros.assist.prostheticleg"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                    <input class="w3-input w3-border" ng-model="comment.prostheticleg" ng-show="prostheticlegexpand == '1' && history.ros.assist.prostheticleg" placeholder="Comment on positive finding">
+                  </div>
+                  <div class="btn-group w3-col m6 l4 w3-padding-tiny">
+                    <label class="btn btn_red-no" ng-model="history.ros.assist.wheelchair" uib-btn-radio=0 uncheckable>No</label>
+                    <label class="btn btn_condition">wheelchair</label>
+                    <label class="btn btn_green-yes" ng-model="history.ros.assist.wheelchair" uib-btn-radio=1 uncheckable>Yes</label>
+                    <label class="btn btn_green-yes" ng-model="wheelchairexpand" ng-show="history.ros.assist.wheelchair"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                    <input class="w3-input w3-border" ng-model="comment.wheelchair" ng-show="wheelchairexpand == '1' && history.ros.assist.wheelchair" placeholder="Comment on positive finding">
+                  </div>
+                  <div class="btn-group w3-col m6 l4 w3-padding-tiny">
+                    <label class="btn btn_red-no" ng-model="history.ros.assist.walker" uib-btn-radio=0 uncheckable>No</label>
+                    <label class="btn btn_condition">walker</label>
+                    <label class="btn btn_green-yes" ng-model="history.ros.assist.walker" uib-btn-radio=1 uncheckable>Yes</label>
+                    <label class="btn btn_green-yes" ng-model="walkerexpand" ng-show="history.ros.assist.walker"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                    <input class="w3-input w3-border" ng-model="comment.walker" ng-show="walkerexpand == '1' && history.ros.assist.walker" placeholder="Comment on positive finding">
+                  </div>
+                </section>                 
+              </div>
+            </div>
+            <!-- History ROS Constitutional -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.const.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Constitutional</button>
+                <label class="btn btn-primary w3-right" ng-model="history.ros.const.morebutton" ng-show="history.ros.const.button==1" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0"><span class="glyphicon glyphicon-chevron-down"></span>More</label>
+              </div>
+              <div class="w3-row">
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.anorexia" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{history.pmhx.chf ? '#ff8282':'	#6495ed'}};">
+                    anorexia</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.weightchange" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="weightchangeexpand" ng-show="history.ros.const.weightchange"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.weightchange" ng-show="weightchangeexpand == '1' && history.ros.const.weightchange" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.chills" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    chills</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.chills" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="chillsexpand" ng-show="history.ros.const.chills"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.chills" ng-show="chillsexpand == '1' && history.ros.const.chills" placeholder="Comment on positive finding">
+                </div>  
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.diaphoresis" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    diaphoresis</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.diaphoresis" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="diaphoresisexpand" ng-show="history.ros.const.diaphoresis"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.diaphoresis" ng-show="diaphoresisexpand == '1' && history.ros.const.diaphoresis" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.dizziness" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    dizziness</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.dizziness" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="dizzinessexpand" ng-show="history.ros.const.dizziness"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.dizziness" ng-show="dizzinessexpand == '1' && history.ros.const.dizziness" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.fatigue" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{history.pmhx.chf ? '#ff8282':'	#6495ed'}};">
+                    fatigue</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.fatigue" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="fatigueexpand" ng-show="history.ros.const.fatigue"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.fatigue" ng-show="fatigueexpand == '1' && history.ros.const.fatigue" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.fevers" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    fevers</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.fevers" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="feversexpand" ng-show="history.ros.const.fevers"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.fevers" ng-show="feversexpand == '1' && history.ros.const.fevers" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.hyporexia" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    hyporexia</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.weightchange" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="weightchangeexpand" ng-show="history.ros.const.weightchange"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.weightchange" ng-show="weightchangeexpand == '1' && history.ros.const.weightchange" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.lossofappetite" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    loss of appetite</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.lossofappetite" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="lossofappetiteexpand" ng-show="history.ros.const.lossofappetite"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.lossofappetite" ng-show="lossofappetiteexpand == '1' && history.ros.const.lossofappetite" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.malaise" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    malaise</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.malaise" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="malaiseexpand" ng-show="history.ros.const.malaise"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.malaise" ng-show="malaiseexpand == '1' && history.ros.const.malaise" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.pain" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    pain</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.pain" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="painexpand" ng-show="history.ros.const.pain"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.pain" ng-show="painexpand == '1' && history.ros.const.pain" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.polyphagia" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    polyphagia</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.weightchange" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="weightchangeexpand" ng-show="history.ros.const.weightchange"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.weightchange" ng-show="weightchangeexpand == '1' && history.ros.const.weightchange" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.polydipsia" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    polydipsia</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.polydipsia" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="polydipsiaexpand" ng-show="history.ros.const.polydipsia"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.polydipsia" ng-show="polydipsiaexpand == '1' && history.ros.const.polydipsia" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.thirst" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    thirst</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.weightchange" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="weightchangeexpand" ng-show="history.ros.const.weightchange"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.weightchange" ng-show="weightchangeexpand == '1' && history.ros.const.weightchange" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.weakness" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{history.pmhx.chf ? '#ff8282':'	#6495ed'}};">
+                    weakness</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.weakeness" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="weakenessexpand" ng-show="history.ros.const.weakeness"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.weakeness" ng-show="weakenessexpand == '1' && history.ros.const.weakeness" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.weightchange" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    weight change</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.weightchange" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="weightchangeexpand" ng-show="history.ros.const.weightchange"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.weightchange" ng-show="weightchangeexpand == '1' && history.ros.const.weightchange" placeholder="Comment on positive finding">
+                </div>
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1 || history.pmhx.chf">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.weightgain" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{history.pmhx.chf || history.pmhx.htn ? '#ff8282':'	#6495ed'}};">
+                    weight gain</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.weightgain" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="weightgainexpand" ng-show="history.ros.const.weightgain"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.weightgain" ng-show="weightgainexpand == '1' && history.ros.const.weightgain" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.const.morebutton==1">
+                  <label class="btn btn_red-no" ng-model="history.ros.const.weightloss" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    weight loss</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.const.weightloss" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="weightlossexpand" ng-show="history.ros.const.weightloss"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.weightloss" ng-show="weightlossexpand == '1' && history.ros.const.weightloss" placeholder="Comment on positive finding">
+                </div>
+              </div>
+            </div>
+            <!-- History ROS Eyes -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.eyes.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Eyes</button>
+                <label class="btn btn-primary w3-right" ng-show="history.ros.eyes.button==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row">
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.eyes.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.eyes.dryeyes" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    dryeyes</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.eyes.dryeyes" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="dryeyesexpand" ng-show="history.ros.eyes.dryeyes"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.dryeyes" ng-show="dryeyesexpand == '1' && history.ros.eyes.dryeyes" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.eyes.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.eyes.visionchange" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    visionchange</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.eyes.visionchange" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="visionchangeexpand" ng-show="history.ros.eyes.visionchange"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.visionchange" ng-show="visionchangeexpand == '1' && history.ros.eyes.visionchange" placeholder="Comment on positive finding">
+                </div> 
+                <section class="w3-col s12" ng-show="history.ros.eyes.button" >
+                </section> 
+              </div> 
+            </div>
+            <!-- History ROS Ear, Nose, Throat, Mouth -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.ent.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Ears, Nose, Throat, Mouth</button>
+                <label class="btn btn-primary w3-right" ng-model="history.ros.ent.morebutton" ng-show="history.ros.ent.button==1" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row">
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.ent.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.ent.drymouth" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    dry mouth</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.ent.drymouth" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="drymouthexpand" ng-show="history.ros.ent.drymouth"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.drymouth" ng-show="drymouthexpand == '1' && history.ros.ent.drymouth" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.ent.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.ent.sorethroat" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    sore throat</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.ent.sorethroat" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="sorethroatexpand" ng-show="history.ros.ent.sorethroat"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.sorethroat" ng-show="sorethroatexpand == '1' && history.ros.ent.sorethroat" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.ent.morebutton == '1'">
+                  <label class="btn btn_red-no" ng-model="history.ros.ent.tinnitus" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    tinnitus</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.ent.tinnitus" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="tinnitusexpand" ng-show="history.ros.ent.tinnitus"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.tinnitus" ng-show="tinnitusexpand == '1' && history.ros.ent.tinnitus" placeholder="Comment on positive finding">
+                </div> 
+              </div>
+            </div>
+            <!-- History ROS Cardiovascular -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.cv.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Cardiovascular</button>
+                <label class="btn btn-primary w3-right" ng-model="history.ros.cv.morebutton"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-show="history.ros.cv.button==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>
+              </div>
+              <div class="w3-row">
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.cv.button || history.ros.common || history.pmhx.chf || history.pmhx.htn">
+                  <label class="btn btn_red-no" ng-model="history.ros.cv.chestpain" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{history.pmhx.chf || history.pmhx.htn ? '#ff8282':'	#6495ed'}};">
+                    chest pain</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.cv.chestpain" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="chestpainexpand" ng-show="history.ros.cv.chestpain"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.chestpain" ng-show="chestpainexpand == '1' && history.ros.cv.chestpain" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.cv.button || history.ros.common || history.pmhx.chf">
+                  <label class="btn btn_red-no" ng-model="history.ros.cv.leedema" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{history.pmhx.chf ? '#ff8282':'#6495ed'}};">
+                    lower extremity edema</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.cv.leedema" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="leedemaexpand" ng-show="history.ros.cv.leedema"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.leedema" ng-show="leedemaexpand == '1' && history.ros.cv.leedema" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.cv.morebutton || history.pmhx.chf">
+                  <label class="btn btn_red-no" ng-model="history.ros.cv.orthopnea" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{history.pmhx.chf ? '#ff8282':'#6495ed'}};">
+                    orthopnea</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.cv.orthopnea" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="orthopneaexpand" ng-show="history.ros.cv.orthopnea"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.orthopnea" ng-show="orthopneaexpand == '1' && history.ros.cv.orthopnea" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.cv.morebutton">
+                  <label class="btn btn_red-no" ng-model="history.ros.cv.palpitations" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    palpitations</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.cv.palpitations" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="palpitationsexpand" ng-show="history.ros.cv.palpitations"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.palpitations" ng-show="palpitationsexpand == '1' && history.ros.cv.palpitations" placeholder="Comment on positive finding">
+                </div>    
+              </div>
+            </div> 
+            <!-- History ROS Respiratory -->
+             <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.pulm.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Respiratory</button>
+                <label class="btn btn-primary w3-right" ng-show="history.ros.pulm.button==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row">
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.pulm.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.pulm.cough" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    cough</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.pulm.cough" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="coughexpand" ng-show="history.ros.pulm.cough"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.cough" ng-show="coughexpand == '1' && history.ros.pulm.cough" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.pulm.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.pulm.dyspnea" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    dyspnea</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.pulm.dyspnea" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="dyspneaexpand" ng-show="history.ros.pulm.dyspnea"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.dyspnea" ng-show="dyspneaexpand == '1' && history.ros.pulm.dyspnea" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.pulm.button">
+                  <label class="btn btn_red-no" ng-model="history.ros.pulm.wheezing" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    wheezing</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.pulm.wheezing" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="wheezingexpand" ng-show="history.ros.pulm.wheezing"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.wheezing" ng-show="wheezingexpand == '1' && history.ros.pulm.wheezing" placeholder="Comment on positive finding">
+                </div> 
+              </div>
+            </div>
+            <!-- History ROS GI -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.gi.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Gastrointestinal</button>
+                <label class="btn btn-primary w3-right" ng-model="history.ros.gi.morebutton" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-show="history.ros.gi.button==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row">
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.gi.morebutton">
+                  <label class="btn btn_red-no" ng-model="history.ros.gi.abdominalpain" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    abdominalpain</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.gi.abdominalpain" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="abdominalpainexpand" ng-show="history.ros.gi.abdominalpain"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.abdominalpain" ng-show="abdominalpainexpand == '1' && history.ros.gi.abdominalpain" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.gi.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.gi.constipation" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    constipation</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.gi.constipation" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="constipationexpand" ng-show="history.ros.gi.constipation"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.constipation" ng-show="constipationexpand == '1' && history.ros.gi.constipation" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.gi.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.gi.diarrhea" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    diarrhea</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.gi.diarrhea" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="diarrheaexpand" ng-show="history.ros.gi.diarrhea"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.diarrhea" ng-show="diarrheaexpand == '1' && history.ros.gi.diarrhea" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.gi.morebutton || history.pmhx.gerd">
+                  <label class="btn btn_red-no" ng-model="history.ros.gi.heartburn" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    heartburn</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.gi.heartburn" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="heartburnexpand" ng-show="history.ros.gi.heartburn"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.heartburn" ng-show="heartburnexpand == '1' && history.ros.gi.heartburn" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.gi.morebutton">
+                  <label class="btn btn_red-no" ng-model="history.ros.gi.melena" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    melena</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.gi.melena" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="melenaexpand" ng-show="history.ros.gi.melena"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.melena" ng-show="melenaexpand == '1' && history.ros.gi.melena" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.gi.button">
+                  <label class="btn btn_red-no" ng-model="history.ros.gi.nausea" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    nausea</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.gi.nausea" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="nauseaexpand" ng-show="history.ros.gi.nausea"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.nausea" ng-show="nauseaexpand == '1' && history.ros.gi.nausea" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.gi.morebutton">
+                  <label class="btn btn_red-no" ng-model="history.ros.gi.swallowing" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    swallowing</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.gi.swallowing" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="swallowingexpand" ng-show="history.ros.gi.swallowing"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.swallowing" ng-show="swallowingexpand == '1' && history.ros.gi.swallowing" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.gi.button">
+                  <label class="btn btn_red-no" ng-model="history.ros.gi.vomiting" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    vomiting</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.gi.vomiting" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="vomitingexpand" ng-show="history.ros.gi.vomiting"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.vomiting" ng-show="vomitingexpand == '1' && history.ros.gi.vomiting" placeholder="Comment on positive finding">
+                </div> 
+              </div>
+            </div> 
+            <!-- History ROS GU -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.gu.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Genitourinary</button>
+                <label class="btn btn-primary w3-right" ng-show="history.ros.gu.button==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row">
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.gu.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.gu.hematuria" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    hematuria</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.gu.hematuria" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="hematuriaexpand" ng-show="history.ros.gu.hematuria"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.hematuria" ng-show="hematuriaexpand == '1' && history.ros.gu.hematuria" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.gu.morebutton">
+                  <label class="btn btn_red-no" ng-model="history.ros.gu.dysuria" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    dysuria</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.gu.dysuria" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="dysuriaexpand" ng-show="history.ros.gu.dysuria"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.dysuria" ng-show="dysuriaexpand == '1' && history.ros.gu.dysuria" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.gu.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.gu.incontinent" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    incontinent</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.gu.incontinent" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="incontinentexpand" ng-show="history.ros.gu.incontinent"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.incontinent" ng-show="incontinentexpand == '1' && history.ros.gu.incontinent" placeholder="Comment on positive finding">
+                </div> 
+              </div> 
+            </div>
+            <!-- History ROS Musc -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.musc.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Musculoskeletal</button>
+                <label class="btn btn-primary w3-right" ng-show="history.ros.musc.button==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row">
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.musc.button">
+                  <label class="btn btn_red-no" ng-model="history.ros.musc.lumbago" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    lumbago</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.musc.lumbago" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="lumbagoexpand" ng-show="history.ros.musc.lumbago"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.lumbago" ng-show="lumbagoexpand == '1' && history.ros.musc.lumbago" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.musc.button">
+                  <label class="btn btn_red-no" ng-model="history.ros.musc.jointpain" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    jointpain</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.musc.jointpain" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="jointpainexpand" ng-show="history.ros.musc.jointpain"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.jointpain" ng-show="jointpainexpand == '1' && history.ros.musc.jointpain" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.musc.button">
+                  <label class="btn btn_red-no" ng-model="history.ros.musc.weakness" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    weakness</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.musc.weakness" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="weaknessexpand" ng-show="history.ros.musc.weakness"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.weakness" ng-show="weaknessexpand == '1' && history.ros.musc.weakness" placeholder="Comment on positive finding">
+                </div> 
+              </div> 
+            </div>
+            <!-- History ROS Skin -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.skin.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Integumentary</button>
+                <label class="btn btn-primary w3-right" ng-show="history.ros.skin.button==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row">
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.skin.button">
+                  <label class="btn btn_red-no" ng-model="history.ros.skin.changeinhairorskin" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    changeinhairorskin</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.skin.changeinhairorskin" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="changeinhairorskinexpand" ng-show="history.ros.skin.changeinhairorskin"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.changeinhairorskin" ng-show="changeinhairorskinexpand == '1' && history.ros.skin.changeinhairorskin" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.skin.button">
+                  <label class="btn btn_red-no" ng-model="history.ros.skin.itching" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    itching</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.skin.itching" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="itchingexpand" ng-show="history.ros.skin.itching"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.itching" ng-show="itchingexpand == '1' && history.ros.skin.itching" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.skin.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.skin.rashes" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    rashes</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.skin.rashes" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="rashesexpand" ng-show="history.ros.skin.rashes"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.rashes" ng-show="rashesexpand == '1' && history.ros.skin.rashes" placeholder="Comment on positive finding">
+                </div>
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.skin.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.skin.wounds" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    wounds</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.skin.wounds" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="woundsexpand" ng-show="history.ros.skin.wounds"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.wounds" ng-show="woundsexpand == '1' && history.ros.skin.wounds" placeholder="Comment on positive finding">
+                </div>
+              </div> 
+            </div>
+            <!-- History ROS Neuro -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.neuro.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Neurology</button>
+                <label class="btn btn-primary w3-right" ng-show="history.ros.neuro.button==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row">
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.neuro.button">
+                  <label class="btn btn_red-no" ng-model="history.ros.neuro.deficits" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    deficits</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.neuro.deficits" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="deficitsexpand" ng-show="history.ros.neuro.deficits"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.deficits" ng-show="deficitsexpand == '1' && history.ros.neuro.deficits" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.neuro.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.neuro.gaitlimitations" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    gaitlimitations</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.neuro.gaitlimitations" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="gaitlimitationsexpand" ng-show="history.ros.neuro.gaitlimitations"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.gaitlimitations" ng-show="gaitlimitationsexpand == '1' && history.ros.neuro.gaitlimitations" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.neuro.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.neuro.headaches" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    headaches</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.neuro.headaches" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="headachesexpand" ng-show="history.ros.neuro.headaches"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.headaches" ng-show="headachesexpand == '1' && history.ros.neuro.headaches" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.neuro.button">
+                  <label class="btn btn_red-no" ng-model="history.ros.neuro.seizures" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    seizures</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.neuro.seizures" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="seizuresexpand" ng-show="history.ros.neuro.seizures"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.seizures" ng-show="seizuresexpand == '1' && history.ros.neuro.seizures" placeholder="Comment on positive finding">
+                </div> 
+              </div> 
+            </div>
+            <!-- History ROS Psych -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.psych.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Psych</button>
+                <label class="btn btn-primary w3-right" ng-show="history.ros.psych.button==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row">
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.psych.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.psych.anxiety" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    anxiety</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.psych.anxiety" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="anxietyexpand" ng-show="history.ros.psych.anxiety"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.anxiety" ng-show="anxietyexpand == '1' && history.ros.psych.anxiety" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.psych.button || history.ros.common">
+                  <label class="btn btn_red-no" ng-model="history.ros.psych.depression" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    depression</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.psych.depression" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="depressionexpand" ng-show="history.ros.psych.depression"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.depression" ng-show="depressionexpand == '1' && history.ros.psych.depression" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.psych.button">
+                  <label class="btn btn_red-no" ng-model="history.ros.psych.poorsleep" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    poorsleep</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.psych.poorsleep" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="poorsleepexpand" ng-show="history.ros.psych.poorsleep"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.poorsleep" ng-show="poorsleepexpand == '1' && history.ros.psych.poorsleep" placeholder="Comment on positive finding">
+                </div> 
+                <div class="btn-group w3-col m6 l4 w3-padding-tiny" ng-show="history.ros.psych.button">
+                  <label class="btn btn_red-no" ng-model="history.ros.psych.suicidalideation" uib-btn-radio=0 uncheckable>No</label>
+                  <label class="btn btn_condition" style="background-color:{{"" ? '#ff8282':'	#6495ed'}};">
+                    suicidalideation</label>
+                  <label class="btn btn_green-yes" ng-model="history.ros.psych.suicidalideation" uib-btn-radio=1 uncheckable>Yes</label>
+                  <label class="btn btn_green-yes" ng-model="suicidalideationexpand" ng-show="history.ros.psych.suicidalideation"  uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</label>
+                  <input class="w3-input w3-border" ng-model="comment.suicidalideation" ng-show="suicidalideationexpand == '1' && history.ros.psych.suicidalideation" placeholder="Comment on positive finding">
+                </div> 
+              </div> 
+            </div>
+            <!-- History ROS Endocrine -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.endo.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Endocrine</button>
+                <label class="btn btn-primary w3-right" ng-show="history.ros.endo.button==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row">
+              </div> 
+            </div>          
+             <!-- History ROS Hematologic/Lymphatic -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.hemeolymph.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Heme / Lymph</button>
+                <label class="btn btn-primary w3-right" ng-show="history.ros.hemeolymph.button==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row">
+              </div> 
+            </div>
+            <!-- History ROS Allergic / Immunologic -->
+            <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border- w3-hover-border-green">
+              <div class="w3-clear">
+                <button class="btn btn-primary" ng-model="history.ros.allimmuno.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Allergy / Immunology</button>
+                <label class="btn btn-primary w3-right" ng-show="history.ros.allimmuno.button==1"><span class="glyphicon glyphicon-chevron-down"></span>More</label>  
+              </div>
+              <div class="w3-row">
+              </div> 
+          </div>
+         </div>
+        </div>
+        </br>
+        <p>Subjective comment:</p>
+        <textarea name="subjective" ng-model="form.subjective" rows="5" cols="50"></textarea>
+  
+  <!-- Medication section -->
+        </br>
+      <div class="w3-round w3-hover-shadow w3-border w3-leftbar w3-margin-bottom w3-border-left w3-light-grey w3-border w3-hover-border-green">
+        <div class="w3-clear">
+          <button class="btn btn-primary" ng-model="medications.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">Medications</button>
+          <button class="btn btn-primary w3-right"  ng-model="medicationsmore.button" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0"><span class="glyphicon glyphicon-chevron-down"></span>More</button> 
+          <div class="w3-row w3-padding-12">
+            <label class="w3-col m3 l2">Common:</label>
+            <section class="btn-group w3-col s6 m3 l2">
+              <button ng-model="pharm.biguanide.metformin" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Metformin</button>
+              <button ng-show="pharm.biguanide.metformin" ng-model="metforminbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+            </section> 
+            <section class="btn-group w3-col s6 m3 l2">
+              <button ng-model="pharm.plavix" class="btn btn_condition" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Plavix</button>
+              <button ng-show="pharm.plavix" ng-model="plavixbutton" class="btn btn-warning" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">+</button>
+            </section>
+          </div>
+        </div>
+      </div>
+
+
+        <fieldset><legend>Medications></legend>
+          <div>
+            <input type="checkbox" ng-model="pharm.warfarin" ng-show="history.pmhx.atrialfibrillation || history.pmhx.deepvenousthrombosis"><span ng-show="history.pmhx.atrialfibrillation">Warfarin</span>
+            <input type="checkbox" ng-model="pharm.asa">ASA 
+            <input type="checkbox" ng-model="pharm.plavix">Plavix
+            <input type="checkbox" ng-model="pharm.haldol">Haldol
+            <input type="checkbox" ng-model="pharm.quetiapine">quetiapine (Seroquel)
+            <input type="checkbox" ng-model="pharm.metoprolol">metoprolol (B-blocker)
+            <input type="checkbox" ng-model="pharm.atorvastatin">atorvastatin (Statin)
+            <input type="checkbox" ng-model="pharm.chemo">Chemo
+          </div>
+        </fieldset>
+
+      <!--<fieldset><legend>Objective:</legend>
+        <textarea name="form.objective" ng-model="form.objective" rows="5" cols="50"></textarea>
+      </fieldset> 
+      
+      <fieldset><legend>Assessment:</legend>
+        <textarea name="form.assessment" ng-model="form.assessment" rows="5" cols="50"></textarea>
+      </fieldset>
+      
+      <fieldset><legend>Plan:</legend>
+        <textarea name="form.plan" ng-model="form.plan" rows="5" cols="50"></textarea>
+      </fieldset>  -->
+    </form>
+    <p>Billing</p>
+      <fieldset>
+        <div>
+          <p ng-show="history.ros.gi.nausea + history.ros.gi.vomiting >1.5">GI =2</p>{{history.ros.gi.nausea + history.ros.gi.vomiting}}
+        </div>
+      </fieldset>
+
+    <div>
+      <p>Report</p>
+
+
+      <p>Encounter:</p>
+        <div>
+          <p>
+            <span ng-show="patient.id">ID: {{patient.id}}</span><span ng-show="patient.age">, {{patient.age}} year old</span><span ng-show="patient.gender"> {{patient.gender}}</span><span ng-show="patient.id">.</span></p>
+          <p ng-show="form.encounter.newEstablished">Visit type: {{form.encounter.newEstablished}} patient<span ng-show="form.encounter.facility"> seen at {{form.encounter.facility}}</span><span>.</span><span ng-show="form.encounter.room"> Patient admitted to room {{form.encounter.room}}.</span></p>
+        </div>
+      <p>Chief complaint: {{comment.chiefcomplaint}}</p>
+      <p>History of Present Illness: {{comment.hpi}}</p>
+      <p ng-show="psfhx.button">Family and Social Hisotry:</p>
+        <div style="list-style-type: none">
+          <li ng-show="psfhx.negthree">--Social history negative for tobacco, excessive alcohol, or illicit use of drugs.</li>
+          <li ng-show="psfhx.tobacco">--Positive for tobacco use</li>
+          <li ng-show="psfhx.alcohol">--Positive for alcohol use</li>
+          <li ng-show="psfhx.cannabis">--Positive for use of cannabis</li>
+          <li ng-show="psfhx.cocaine">--Positive for use of cocaine</li>
+          <li ng-show="psfhx.heroin">--Positive for use of heroin</li>
+          <li ng-show="psfhx.meth">--Positive for use of meth</li>
+          <li ng-show="psfhx.opioids">--Positive for use of opioids</li>
+          <li ng-show="psfhx.spice">--Positive for use of spice</li>
+          <li ng-show="psfhx.homeless">-- Currently homeless</li>
+          <li ng-show="psfhx.committed">--Legal status: committed</li>
+          <li ng-show="psfhx.noncontributory">--Family history noncontributory.</li>
+
+          <!--<li ng-show="psfhx.">--</li>-->
+        </div>
+
+
+        <div>
+          <p>{{comment.psfhx}}
+        </div>
+      <p>Past Medical History</p>
+        <div name="ngshowPositivesPMHx" style="list-style-type: none">
+          <li ng-show="history.pmhx.anxiety">‐‐ anxiety: {{comment.anxiety}}</li>
+          <li ng-show="history.pmhx.arthritis">‐‐ arthritis: {{comment.arthritis}}</li>
+          <li ng-show="history.pmhx.asthma">‐‐ asthma: {{comment.asthma}}</li>
+          <li ng-show="history.pmhx.atrialfibrillation">‐‐ atrial fibrillation: {{comment.atrialfibrillation}}</li>
+          <li ng-show="history.pmhx.bipolar">‐‐ bipolar: {{comment.bipolar}}</li>
+          <li ng-show="history.pmhx.cancer">‐‐ cancer: {{comment.cancer}}</li>
+          <li ng-show="history.pmhx.chf">‐‐ congestive heart failure: {{comment.chf}}</li>
+          <li ng-show="history.pmhx.chronickidneydisease">‐‐ chronic kidney disease: {{comment.chronickidneydisease}}</li>
+          <li ng-show="history.pmhx.copd">‐‐ chronic obstructive pulmonary disease: {{comment.copd}}</li>
+          <li ng-show="history.pmhx.crohns">‐‐ crohns: {{comment.crohns}}</li>
+          <li ng-show="history.pmhx.dementia">‐‐ dementia: {{comment.dementia}}</li>
+          <li ng-show="history.pmhx.depression">‐‐ depression: {{comment.depression}}</li>
+          <li ng-show="history.pmhx.diabetestype2">-- diabetes type 2: {{comment.diabetes}}</li>
+          <li ng-show="history.pmhx.dysrhythmia">‐‐ dysrhythmia: {{comment.dysrhythmia}}</li>
+          <li ng-show="history.pmhx.epilepsy">‐‐ epilepsy: {{comment.epilepsy}}</li>
+          <li ng-show="history.pmhx.glaucoma">‐‐ glaucoma: {{comment.glaucoma}}</li>
+          <li ng-show="history.pmhx.haemophilia">‐‐ haemophilia: {{comment.haemophilia}}</li>
+          <li ng-show="history.pmhx.heartattack">‐‐ heart attack: {{comment.heartattack}}</li>
+          <li ng-show="history.pmhx.heartdisease">‐‐ heart disease: {{comment.heartdisease}}</li>
+          <li ng-show="history.pmhx.HIV">‐‐ HIV: {{comment.HIV}}</li>
+          <li ng-show="history.pmhx.htn">‐‐ hypertension: {{comment.htn}}</li>
+          <li ng-show="history.pmhx.hyperlipidemia">‐‐ hyperlipidemia: {{comment.hyperlipidemia}}</li>
+          <li ng-show="history.pmhx.hypothyroidism">‐‐ hypothyroidism: {{comment.hypothyroidism}}</li>
+          <li ng-show="history.pmhx.lupus">‐‐ lupus: {{comment.lupus}}</li>
+          <li ng-show="history.pmhx.multiplesclerosis">‐‐ multiple sclerosis: {{comment.multiplesclerosis}}</li>
+          <li ng-show="history.pmhx.osteoporosis">‐‐ osteoporosis: {{comment.osteoporosis}}</li>
+          <li ng-show="history.pmhx.parkinsons">‐‐ parkinsons: {{comment.parkinsons}}</li>
+          <li ng-show="history.pmhx.pneumonia">‐‐ pneumonia: {{comment.pneumonia}}</li>
+          <li ng-show="history.pmhx.schizophrenia">‐‐ schizophrenia: {{comment.schizophrenia}}</li>
+          <li ng-show="history.pmhx.stroke">‐‐ stroke: {{comment.stroke}}</li>
+          <li ng-show="history.pmhx.ulcerativecolitis">‐‐ ulcerative colitis: {{comment.ulcerativecolitis}}</li>
+        </div>
+      <p>Medications</p>
+        <div style="list-style-type: none">
+          <li ng-show="pharm.biguanide.metformin">-- biguanide: Metformin
+        </div>
+        
+        <p>ROS</p>
+          <p>Review of systems - pertinent positives</p>
+            <div name="ngshowPostiveROS" style="list-style-type: none">
+              <li ng-show="history.ros.assist.hearingaid== '1'">‐‐hearing aid: {{comment.hearingaid }}</li>
+              <li ng-show="history.ros.assist.eyecorrection== '1'">‐‐eye correction (glasses or contacts): {{comment.eyecorrection }}</li>
+              <li ng-show="history.ros.assist.cane== '1'">‐‐cane: {{comment.cane }}</li>
+              <li ng-show="history.ros.assist.folycatheter== '1'">‐‐foly catheter: {{comment.folycatheter }}</li>
+              <li ng-show="history.ros.assist.prostheticleg== '1'">‐‐prosthetic leg: {{comment.prostheticleg }}</li>
+              <li ng-show="history.ros.assist.suprapubiccatheter== '1'">‐‐suprapubic catheter: {{comment.suprapubiccatheter }}</li>
+              <li ng-show="history.ros.assist.walker== '1'">‐‐walker: {{comment.walker }}</li>
+              <li ng-show="history.ros.assist.wheelchair== '1'">‐‐wheelchair: {{comment.wheelchair }}</li>
+              <li ng-show="history.ros.const.dizziness== '1'">‐‐dizziness: {{comment.dizziness }}</li>
+              <li ng-show="history.ros.const.fever== '1'">‐‐fever: {{comment.fevers }}</li>
+              <li ng-show="history.ros.const.lossofappetite== '1'">‐‐loss of appetite (anorexia): {{comment.lossofappetite }}</li>
+              <li ng-show="history.ros.const.pain== '1'">‐‐pain: {{comment.pain }}</li>
+              <li ng-show="history.ros.const.weightgain== '1'">‐‐weight gain: {{comment.weightgain }}</li>
+              <li ng-show="history.ros.const.weightloss== '1'">‐‐weight loss: {{comment.weightloss }}</li>
+              <li ng-show="history.ros.cv.chestpain== '1'">‐‐chest pain: {{comment.chestpain }}</li>
+              <li ng-show="history.ros.cv.leedema== '1'">‐‐lower extremity edema: {{comment.leedema }}</li>
+              <li ng-show="history.ros.cv.orthopnea== '1'">‐‐orthopnea: {{comment.orthopnea }}</li>
+              <li ng-show="history.ros.cv.palpitations== '1'">‐‐palpitations: {{comment.palpitations }}</li>
+              <li ng-show="history.ros.ent.drymouth== '1'">‐‐dry mouth: {{comment.drymouth }}</li>
+              <li ng-show="history.ros.ent.sorethroat== '1'">‐‐sore throat: {{comment.sorethroat }}</li>
+              <li ng-show="history.ros.ent.tinnitus== '1'">‐‐tinnitus: {{comment.tinnitus }}</li>
+              <li ng-show="history.ros.eyes.dryeyes== '1'">‐‐dry eyes: {{comment.dryeyes }}</li>
+              <li ng-show="history.ros.eyes.visionchange== '1'">‐‐vision changes: {{comment.visionchange }}</li>
+              <li ng-show="history.ros.gi.abdominalpain== '1'">‐‐abdominal pain: {{comment.abdominalpain }}</li>
+              <li ng-show="history.ros.gi.melena== '1'">‐‐blood in stool: {{comment.melena }}</li>
+              <li ng-show="history.ros.gi.constipation== '1'">‐‐constipation: {{comment.constipation }}</li>
+              <li ng-show="history.ros.gi.diarrhea== '1'">‐‐diarrhea: {{comment.diarrhea }}</li>
+              <li ng-show="history.ros.gi.heartburn== '1'">‐‐heartburn: {{comment.heartburn }}</li>
+              <li ng-show="history.ros.gi.nausea== '1'">‐‐nausea: {{comment.nausea }}</li>
+              <li ng-show="history.ros.gi.swallowing== '1'">‐‐problems swallowing: {{comment.swallowing }}</li>
+              <li ng-show="history.ros.gi.vomiting== '1'">‐‐vomiting: {{comment.vomiting }}</li>
+              <li ng-show="history.ros.gu.hematuria== '1'">‐‐blood in urine: {{comment.hematuria }}</li>
+              <li ng-show="history.ros.gu.dysuria== '1'">‐‐dysuria: {{comment.dysuria }}</li>
+              <li ng-show="history.ros.gu.incontinent== '1'">‐‐incontinent: {{comment.incontinent }}</li>
+              <li ng-show="history.ros.musc.lumbago== '1'">‐‐back pain: {{comment.lumbago }}</li>
+              <li ng-show="history.ros.musc.jointpain== '1'">‐‐joint pain: {{comment.jointpain }}</li>
+              <li ng-show="history.ros.musc.weakness== '1'">‐‐weakness: {{comment.weakness }}</li>
+              <li ng-show="history.ros.neuro.dificits== '1'">‐‐deficits: {{comment.dificits }}</li>
+              <li ng-show="history.ros.neuro.gaitlimitations== '1'">‐‐gait limitations: {{comment.gaitlimitations }}</li>
+              <li ng-show="history.ros.neuro.headaches== '1'">‐‐headaches: {{comment.headaches }}</li>
+              <li ng-show="history.ros.neuro.seizures== '1'">‐‐seizures: {{comment.seizures }}</li>
+              <li ng-show="history.ros.psych.anxiety== '1'">‐‐anxiety: {{comment.anxiety }}</li>
+              <li ng-show="history.ros.psych.depression== '1'">‐‐depression: {{comment.depression }}</li>
+              <li ng-show="history.ros.psych.poorsleep== '1'">‐‐poor sleep: {{comment.poorsleep }}</li>
+              <li ng-show="history.ros.psych.suicidalideation== '1'">‐‐suicidal ideation: {{comment.suicidalideation }}</li>
+              <li ng-show="history.ros.pulm.cough== '1'">‐‐cough: {{comment.cough }}</li>
+              <li ng-show="history.ros.pulm.dyspnea== '1'">‐‐dyspnea: {{comment.dyspnea }}</li>
+              <li ng-show="history.ros.pulm.wheezing== '1'">‐‐wheezing: {{comment.wheezing }}</li>
+              <li ng-show="history.ros.skin.changeinhairorskin== '1'">‐‐changes in hair or skin: {{comment.changeinhairorskin }}</li>
+              <li ng-show="history.ros.skin.itching== '1'">‐‐itching: {{comment.itching }}</li>
+              <li ng-show="history.ros.skin.rashes== '1'">‐‐rashes: {{comment.rashes }}</li>
+            </div>
+            </br>
+          <p>Review of systems - pertinent negatives</p>
+          <div name="ngshowNegativeROS" style="list-style-type: none">
+            <li ng-show="history.ros.assist.hearingaid== '0'">‐‐hearing aid: {{comment.hearingaid }}</li>
+            <li ng-show="history.ros.assist.eyecorrection== '0'">‐‐eye correction (glasses or contacts): {{comment.eyecorrection }}</li>
+            <li ng-show="history.ros.assist.cane== '0'">‐‐cane: {{comment.cane }}</li>
+            <li ng-show="history.ros.assist.folycatheter== '0'">‐‐foly catheter: {{comment.folycatheter }}</li>
+            <li ng-show="history.ros.assist.prostheticleg== '0'">‐‐prosthetic leg: {{comment.prostheticleg }}</li>
+            <li ng-show="history.ros.assist.suprapubiccatheter== '0'">‐‐suprapubic catheter: {{comment.suprapubiccatheter }}</li>
+            <li ng-show="history.ros.assist.walker== '0'">‐‐walker: {{comment.walker }}</li>
+            <li ng-show="history.ros.assist.wheelchair== '0'">‐‐wheelchair: {{comment.wheelchair }}</li>
+            <li ng-show="history.ros.const.dizziness== '0'">‐‐dizziness</li>
+            <li ng-show="history.ros.const.fever== '0'">‐‐fever</li>
+            <li ng-show="history.ros.const.lossofappetite== '0'">‐‐loss of appetite</li>
+            <li ng-show="history.ros.const.pain== '0'">‐‐pain</li>
+            <li ng-show="history.ros.const.weightgain== '0'">‐‐weight gain</li>
+            <li ng-show="history.ros.const.weightloss== '0'">‐‐weight loss</li>
+            <li ng-show="history.ros.cv.chestpain== '0'">‐‐chest pain</li>
+            <li ng-show="history.ros.cv.leedema== '0'">‐‐le edema</li>
+            <li ng-show="history.ros.cv.orthopnea== '0'">‐‐orthopnea</li>
+            <li ng-show="history.ros.cv.palpitations== '0'">‐‐palpitations</li>
+            <li ng-show="history.ros.ent.drymouth== '0'">‐‐dry mouth</li>
+            <li ng-show="history.ros.ent.sorethroat== '0'">‐‐sore throat</li>
+            <li ng-show="history.ros.ent.tinnitus== '0'">‐‐tinnitus</li>
+            <li ng-show="history.ros.eyes.dryeyes== '0'">‐‐dry eyes</li>
+            <li ng-show="history.ros.eyes.visionchange== '0'">‐‐vision changes</li>
+            <li ng-show="history.ros.gi.abdominalpain== '0'">‐‐abdominal pain</li>
+            <li ng-show="history.ros.gi.melena== '0'">‐‐blood in stool</li>
+            <li ng-show="history.ros.gi.constipation== '0'">‐‐constipation</li>
+            <li ng-show="history.ros.gi.diarrhea== '0'">‐‐diarrhea</li>
+            <li ng-show="history.ros.gi.heartburn== '0'">‐‐heartburn</li>
+            <li ng-show="history.ros.gi.nausea== '0'">‐‐nausea</li>
+            <li ng-show="history.ros.gi.swallowing== '0'">‐‐problems swallowing</li>
+            <li ng-show="history.ros.gi.vomiting== '0'">‐‐vomiting</li>
+            <li ng-show="history.ros.gu.hematuria== '0'">‐‐blood in urine</li>
+            <li ng-show="history.ros.gu.dysuria== '0'">‐‐dysuria</li>
+            <li ng-show="history.ros.gu.incontinent== '0'">‐‐incontinent</li>
+            <li ng-show="history.ros.musc.lumbago== '0'">‐‐back pain</li>
+            <li ng-show="history.ros.musc.jointpain== '0'">‐‐joint pain</li>
+            <li ng-show="history.ros.musc.weakness== '0'">‐‐weakness</li>
+            <li ng-show="history.ros.neuro.dificits== '0'">‐‐deficits</li>
+            <li ng-show="history.ros.neuro.gaitlimitations== '0'">‐‐gait limitations</li>
+            <li ng-show="history.ros.neuro.headaches== '0'">‐‐headaches</li>
+            <li ng-show="history.ros.neuro.seizures== '0'">‐‐seizures</li>
+            <li ng-show="history.ros.psych.anxiety== '0'">‐‐anxiety</li>
+            <li ng-show="history.ros.psych.depression== '0'">‐‐depression</li>
+            <li ng-show="history.ros.psych.poorsleep== '0'">‐‐poor sleep</li>
+            <li ng-show="history.ros.psych.suicidalideation== '0'">‐‐suicidal ideation</li>
+            <li ng-show="history.ros.pulm.cough== '0'">‐‐cough</li>
+            <li ng-show="history.ros.pulm.dyspnea== '0'">‐‐dyspnea</li>
+            <li ng-show="history.ros.pulm.wheezing== '0'">‐‐wheezing</li>
+            <li ng-show="history.ros.skin.changeinhairorskin== '0'">‐‐changes in hair or skin</li>
+            <li ng-show="history.ros.skin.itching== '0'">‐‐itching</li>
+            <li ng-show="history.ros.skin.rashes== '0'">‐‐rashes</li>
+          </div>
+          </br>
+      <p>Exam (Objective): {{form.objective}}</p>
+      <p>Assessment: {{form.assessment}}</p>
+        <div style="list-style-type: none">
+          <li ng-show="history.pmhx.diabetestype2">-- Diabetes mellitis type 2</li>
+        </div>
+      <p>Plan: {{form.plan}}</p>
+        <div ng-show="history.pmhx.diabetestype2" style="list-style-type: none">
+          <li>-- Diabetes mellitis type 2:</li>
+          <li> -- Goal for HbA1c is at or below 6.5 ideally but 7.0 is acceptable for elderly patients or those with risk of hypoglycemia or other confounding factors. Glucometer results targeted to be less than 80 mg/dl before meals and less than 180 mg/dl post prandial.  Annual optometry exam, neuropathy and peripheral vascular disease screening, flu shot, and age appropriate vaccines. Idealized therapy for any co-morbid conditions (weight, hypertension, lifestyle, smoking, etc). Assess HgA1c and microalbuminuria every six months.
+            </li>
+          <li> -- Target BMI: Ideally 19 – 25 but up to 30 acceptable if confounding factors present. Dietary goals geared to help control blood sugar and preferably naturally rich in nutrients and low in fat and calories. Avoid sugars and saturated fats where possible. The DASH diet and Mediterranean Diet are good examples to follow. 
+          </li>
+          <li> -- Insulin therapy goals should be adjusted in those patients who can tolerate it to achieve blood glucose levels between 80 and 130 mg/dl before meals. If post prandial checks are performed, levels should be less than 180 mg/dl.
+          </li>
+          <pre>
+            Type 2 Diabetes: Treat-to-Target Schedule
+            FASTING GLUCOSE LEVEL	                           INCREASE IN BASAL INSULIN
+            120 to 140 mg per dL (6.66 to 7.77 mmol per L)      2 units
+            141 to 160 mg per dL (7.83 to 8.88 mmol per L)      4 units
+            161 to 180 mg per dL (8.94 to 9.99 mmol per L)      6 units
+            > 180 mg per dL (9.99 mmol per L)                   8 units
+          </pre>
+          </pre>
+        </div>
+    </div>
+
+
+</body>
+</html>
